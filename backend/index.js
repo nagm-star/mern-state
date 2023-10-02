@@ -35,8 +35,19 @@ app.listen(port, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
-// app.get("/test", (req, res)=> {
-//   res.json({
-//       message: 'Hello world!',
-//   });
-// });
+
+
+app.use((err, req, res, next) => {
+  console.error(err); // Log the error details for your records
+  
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Something went wrong';
+  
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message
+  });
+});
+
+
